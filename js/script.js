@@ -16,6 +16,7 @@ const data = [
   },
 ]
 
+
 const dataArchive = []
 
 const element = document.querySelector(".table");
@@ -57,7 +58,6 @@ btn.addEventListener('click', (e) => {
 function displayList() {
   let task = ''
   let taskArchive = ''
-  console.log(data.length)
   if (data.length > 0) {
       data.forEach((user, index) => {
         task += `<div name="${user.name}" age="${user.age}" attdiv="${index}" class="table_inside">${user.name} ${user.age}
@@ -117,3 +117,94 @@ element.addEventListener('click', function (e) {
   }
 })
 
+const taskData = {
+  1662907031392: {
+    id: 1662907031392,
+    name: "Shopping list",
+    createdAt: new Date().toLocaleDateString(),
+    category: "Task",
+    content: "Tomatoes, bread",
+    dates: "",
+  },
+  1662907031393: {
+    id: 1662907031393,
+    name: "The theory",
+    createdAt: new Date().toLocaleDateString(),
+    category: "Random thoughts",
+    content: "The theory ...",
+    dates: "",
+  },
+  1662907031394: {
+    id: 1662907031394,
+    name: "New feature",
+    createdAt: new Date().toLocaleDateString(),
+    category: "Idea",
+    content: "Implement new feature",
+    dates: "11/9/2022, 12/9/2022",
+  },
+};
+
+const taskDataArchive = {
+  1662907031394: {
+    id: 1662907031394,
+    name: "New feature",
+    createdAt: new Date().toLocaleDateString(),
+    category: "Idea",
+    content: "Implement new feature",
+    dates: "11/9/2022, 12/9/2022",
+  },
+};
+
+const taskTableBody = document.querySelector('.tasktable__body')
+const taskArchiveBody = document.querySelector(".archivetable__body");
+
+if (Object.keys(taskData).length > 0) {
+  displayTaskList();
+}
+
+function addTaskToArchive(item) {
+  taskDataArchve[item.id] = item
+  console.log(taskDataArchve);
+  displayTaskList();
+}
+
+function displayTaskList() {
+  let taskStr = ""
+  let archiveTaskStr =""
+    if (Object.keys(taskData).length > 0) {
+      Object.values(taskData).forEach((task, index) => {
+        taskStr += `
+        <tr>
+          <td>${task.name}</td>
+          <td>${task.createdAt}</td>
+          <td>${task.category}</td>
+          <td>${task.content}</td>
+          <td>${task.dates}</td>
+          <td>
+            <button type="button" class="tasktable__body_button_edit">Edit</button>
+            <button type="button" class="tasktable__body_button_delete">Delete</button>
+            <button type="button" class="tasktable__body_button_archive">Archive</button>
+          </td>
+        </tr>`;
+        taskTableBody.innerHTML = taskStr;
+      });
+    } else {
+      element.innerHTML = "NONE";
+    }
+    if (Object.keys(taskDataArchive).length > 0) {
+      Object.values(taskDataArchive).forEach((task, index) => {
+        archiveTaskStr += `
+        <tr>
+          <td>${task.name}</td>
+          <td>${task.createdAt}</td>
+          <td>${task.category}</td>
+          <td>${task.content}</td>
+          <td>${task.dates}</td>
+          <td>...</td>
+        </tr>`;
+        taskArchiveBody.innerHTML = archiveTaskStr;
+      });
+    } else {
+      taskArchiveBody.innerHTML = "NONE";
+    }
+}
