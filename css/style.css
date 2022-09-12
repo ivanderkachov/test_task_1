@@ -2,7 +2,7 @@ body {
 }
 .table {
 }
-.tasktable, .archivetable {
+.tasktable, .archivetable, .summarytable {
   border-collapse: separate;
   border-spacing: 0px 10px;
 
@@ -22,16 +22,21 @@ body {
   margin: 2px;
   height: 30px;
 }
-.tasktable__header, .archivetable__header {
+.summarytable th, td {
+  padding: 2px 20px;
+  margin: 2px;
+  height: 30px;
+}
+.tasktable__header, .archivetable__header, .summarytable__header {
   color: white;
   background-color: gray;
 }
-.tasktable__body, .archivetable__body, .addTaskTable {
+.tasktable__body, .archivetable__body, .addTaskTable, .summarytable__body{
   background-color: rgb(183, 176, 176);
 }
 .addTaskTable {
   width: 50%;
-  
+
 }
 .addTaskTable__inputField{
   display: flex;
