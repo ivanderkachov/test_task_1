@@ -1,3 +1,5 @@
+//Initial Data
+
 const category = ["Task", "Random thoughts", "Idea"];
 
 let taskData = {
@@ -29,8 +31,17 @@ let taskData = {
 
 let taskDataArchive = {};
 
+const taskTableBody = document.querySelector(".tasktable__body");
+const taskArchiveBody = document.querySelector(".archivetable__body");
+const summaryBody = document.querySelector(".summarytable__body");
+const workSheet = document.querySelector(".worksheet");
+
+//Functions
+
+//get Dates from content field
+
 function getDates(str) {
-  const cond = /\s|\n/
+  const cond = /\s|\n/;
   if (str.length > 0) {
     const arr = str
       .split(cond)
@@ -39,16 +50,13 @@ function getDates(str) {
       .sort()
       .map((it) => new Date(it).toLocaleDateString())
       .join(", ");
-      return arr;
+    return arr;
   } else {
-    return ''
+    return "";
   }
 }
 
-const taskTableBody = document.querySelector(".tasktable__body");
-const taskArchiveBody = document.querySelector(".archivetable__body");
-const summaryBody = document.querySelector(".summarytable__body");
-const workSheet = document.querySelector(".worksheet");
+//Count summary for active and archived tasks
 
 function summary() {
   let summaryStr = "";
@@ -84,9 +92,13 @@ function summary() {
   });
 }
 
+// Display initial data
+
 if (Object.keys(taskData).length > 0) {
   displayTaskList();
 }
+
+// Edit, delete, archive, add functions
 
 function addTaskToArchive(item) {
   taskDataArchive = { ...taskDataArchive, [item]: taskData[item] };
@@ -112,6 +124,8 @@ function addTask(item) {
   taskData = { ...taskData, [item.id]: item };
   displayTaskList();
 }
+
+// Display function
 
 function displayTaskList() {
   let taskStr = ""
@@ -167,6 +181,8 @@ function displayTaskList() {
   summary();
 }
 
+// Add event listener for buttons
+
 workSheet.addEventListener("click", function (e) {
   if (e.target.closest(".tasktable__body_button_delete")) {
     const attValue = e.target
@@ -216,9 +232,7 @@ workSheet.addEventListener("click", function (e) {
       .closest(".tasktable__body_button_save")
       .getAttribute("data");
     const contentValue = document.querySelector('[name="content"]').value
-    const inputEditValue = document.querySelectorAll(
-      `[dataInputEdit = "${attValue}"]`
-    );
+    const inputEditValue = document.querySelectorAll(`[dataInputEdit = "${attValue}"]`);
     let itemEdit = {};
     inputEditValue.forEach((it) => {
       itemEdit = {
@@ -251,10 +265,7 @@ workSheet.addEventListener("click", function (e) {
     const attValue = e.target
       .closest(".worksheet__button_add")
       .getAttribute("data");
-    const inputAddValue = document.querySelectorAll(
-      `[dataInputAdd = "${attValue}"]`
-    );
-
+    const inputAddValue = document.querySelectorAll(`[dataInputAdd = "${attValue}"]`);
     const contentValue = document.querySelector('[name="content"]').value;
     const addTableItem = document.querySelector(".addTaskTable");
     const taskToAdd = `<button type="button" class="worksheet__button_addNewTask"> Add new task </button>`;
