@@ -1,26 +1,37 @@
 body {
+
 }
-.table {
+.worksheet button {
+  cursor: pointer;
+  color: white;
+  margin: 2px;
+  background-color: #989999;
+  border-radius: 5px;
+  border: 1px solid #989999
 }
 .tasktable, .archivetable, .summarytable {
   border-collapse: separate;
   border-spacing: 0px 10px;
-
+  width: 80%;
+  text-align: left;
 }
 .tasktable th, td {
   padding: 2px 20px;
   margin: 2px;
   height: 30px;
+  width: 20%;
 }
 .archivetable th, td {
   padding: 2px 20px;
   margin: 2px;
   height: 30px;
+  width: 20%;
 }
 .addTaskTable th, td {
   padding: 2px 20px;
   margin: 2px;
   height: 30px;
+  width: 20%;
 }
 .summarytable th, td {
   padding: 2px 20px;
@@ -29,18 +40,39 @@ body {
 }
 .tasktable__header, .archivetable__header, .summarytable__header {
   color: white;
-  background-color: gray;
+  background-color: #989999
 }
-.tasktable__body, .archivetable__body, .addTaskTable, .summarytable__body{
-  background-color: rgb(183, 176, 176);
+.tasktable__body, .archivetable__body, .summarytable__body{
+  background-color: #e8eaf4;
+  color: #7a7c82
+}
+.tasktable__body_buttons{
+  display: flex;
 }
 .addTaskTable {
-  width: 50%;
-
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
 }
 .addTaskTable__inputField{
+  border: 1px solid gray;
+  background-color: #e8eaf4;
   display: flex;
   flex-direction: column;
-  align-items:flex-start;
-
+  justify-content: center;
+}
+.addTaskTable__inputField select, input, textarea {
+  margin: 5px;
+}
+.none {
+  width: 100%;
+  background-color: white;
+}
+.archivetable__body_name, .tasktable__body_name, .summarytable__body_name {
+  color: #37373a;
+}
+.archivetable__body_dates, .tasktable__body_dates {
+  max-width: 100%;
+  flex-wrap: wrap;
 }

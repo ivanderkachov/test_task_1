@@ -4,7 +4,7 @@ let taskData = {
   1662907031392: {
     id: 1662907031392,
     name: "Shopping list",
-    createdAt: new Date().toLocaleDateString(),
+    createdAt: new Date(1662907031392).toLocaleDateString(),
     category: "Task",
     content: "Tomatoes, bread",
     dates: "",
@@ -12,7 +12,7 @@ let taskData = {
   1662907031393: {
     id: 1662907031393,
     name: "The theory",
-    createdAt: new Date().toLocaleDateString(),
+    createdAt: new Date(1662907031393).toLocaleDateString(),
     category: "Random thoughts",
     content: "The theory ...",
     dates: "",
@@ -20,7 +20,7 @@ let taskData = {
   1662907031394: {
     id: 1662907031394,
     name: "New feature",
-    createdAt: new Date().toLocaleDateString(),
+    createdAt: new Date(1662907031394).toLocaleDateString(),
     category: "Idea",
     content: "Implement new feature",
     dates: "",
@@ -76,7 +76,7 @@ function summary() {
   Object.entries(summaryAll).forEach((item, index) => {
     summaryStr += `
         <tr>
-          <td>${item[0]}</td>
+          <td class="summarytable__body_name">${item[0]}</td>
           <td>${item[1].active}</td>
           <td>${item[1].archived}</td>
         </tr>`;
@@ -114,9 +114,10 @@ function addTask(item) {
 }
 
 function displayTaskList() {
-  let taskStr = "";
-  let archiveTaskStr = "";
-
+  let taskStr = ""
+  let archiveTaskStr = ""
+  let none = ""
+  let noneArch = ""
   if (Object.keys(taskData).length > 0) {
     const sortedTaskData = Object.keys(taskData).sort((a, b) => b - a).reduce((acc, rec) => {
       return {...acc, [rec]: taskData[rec]}
@@ -124,12 +125,12 @@ function displayTaskList() {
     Object.values(sortedTaskData).forEach((task, index) => {
       taskStr += `
         <tr dataTr=${task.id}>
-          <td>${task.name}</td>
+          <td class="tasktable__body_name">${task.name}</td>
           <td>${task.createdAt}</td>
           <td>${task.category}</td>
           <td>${task.content}</td>
-          <td>${task.dates}</td>
-          <td>
+          <td class="tasktable__body_dates">${task.dates}</td>
+          <td class="tasktable__body_buttons">
             <button data=${task.id} type="button" class="tasktable__body_button_edit">Edit</button>
             <button data=${task.id} type="button" class="tasktable__body_button_delete">Delete</button>
             <button data=${task.id} type="button" class="tasktable__body_button_archive">Archive</button>
@@ -138,7 +139,8 @@ function displayTaskList() {
       taskTableBody.innerHTML = taskStr;
     });
   } else {
-    taskTableBody.innerHTML = "NONE";
+    none += `<div class="none"> ... </div>`
+    taskTableBody.innerHTML = none;
   }
   if (Object.keys(taskDataArchive).length > 0) {
     const sortedTaskDataArchive = Object.keys(taskDataArchive).sort((a, b) => b - a).reduce((acc, rec) => {
@@ -147,11 +149,11 @@ function displayTaskList() {
     Object.values(sortedTaskDataArchive).forEach((task, index) => {
       archiveTaskStr += `
         <tr dataTr=${task.id}>
-          <td>${task.name}</td>
+          <td class="archivetable__body_name">${task.name}</td>
           <td>${task.createdAt}</td>
           <td>${task.category}</td>
           <td>${task.content}</td>
-          <td>${task.dates}</td>
+          <td class="archivetable__body_dates">${task.dates}</td>
           <td>
             <button data=${task.id} type="button" class="tasktable__body_button_unarchive">Unarchive</button>
           </td>
@@ -159,7 +161,8 @@ function displayTaskList() {
       taskArchiveBody.innerHTML = archiveTaskStr;
     });
   } else {
-    taskArchiveBody.innerHTML = "NONE";
+    noneArch += `<div class="none"> ...</div>`;
+    taskArchiveBody.innerHTML = noneArch;
   }
   summary();
 }
@@ -193,7 +196,7 @@ workSheet.addEventListener("click", function (e) {
     const editTableItem = document.querySelector(`[dataTr = "${attValue}"]`);
     const taskToEdit = `
       <td>
-        <input dataInputEdit=${attValue} type="text" name="name" value="${taskData[attValue].name}" />
+        <input dataInputEdit=${attValue} maxlength="20" type="text" name="name" value="${taskData[attValue].name}" />
       </td>
       <td>...</td>
       <td>
@@ -233,13 +236,13 @@ workSheet.addEventListener("click", function (e) {
     const addTableItem = document.querySelector(".addTaskTable");
     const taskToAdd = `
       <div class="addTaskTable__inputField">
-       <input dataInputAdd=${attValue} type="text" name="name" placeholder="Task name"/>
+       <input dataInputAdd=${attValue} maxlength="20" type="text" name="name" placeholder="Task name"/>
        <select dataInputAdd=${attValue} name="category" />
           ${category.map((it, index) => {
             return `<option >${it}</option>`;
           })}
         </select>
-       <textarea dataInputAdd=${attValue} rows="1" type="text" name="content" placeholder="Task content" /></textarea>
+       <textarea dataInputAdd=${attValue} type="text" name="content" placeholder="Task content" /></textarea>
        <button data=${attValue} type="button" class="worksheet__button_add">Add</button>
       </div>`;
     addTableItem.innerHTML = taskToAdd;
@@ -251,6 +254,7 @@ workSheet.addEventListener("click", function (e) {
     const inputAddValue = document.querySelectorAll(
       `[dataInputAdd = "${attValue}"]`
     );
+
     const contentValue = document.querySelector('[name="content"]').value;
     const addTableItem = document.querySelector(".addTaskTable");
     const taskToAdd = `<button type="button" class="worksheet__button_addNewTask"> Add new task </button>`;
@@ -258,13 +262,13 @@ workSheet.addEventListener("click", function (e) {
     inputAddValue.forEach((it) => {
       itemAdd = {
         ...itemAdd,
-        [it.name]: it.value,
+        [it.name]: it.value===''?'...':it.value,
         id: attValue,
         createdAt: new Date(parseInt(attValue)).toLocaleDateString(),
         dates: getDates(contentValue),
       };
     });
-    addTask(itemAdd);
-    addTableItem.innerHTML = taskToAdd;
+      addTask(itemAdd);
+      addTableItem.innerHTML = taskToAdd;
   }
 });
